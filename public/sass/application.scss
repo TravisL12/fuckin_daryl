@@ -20,6 +20,7 @@
             top: 167px;
             position: absolute;
             left: 177px;
+            transition: 0.05s top linear;
             &.daryl {
                 @extend %daryl;
             }

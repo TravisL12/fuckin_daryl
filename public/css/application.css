@@ -12,6 +12,7 @@
   .container .dave .mouth {
     top: 167px;
     position: absolute;
-    left: 177px; }
+    left: 177px;
+    transition: 0.05s top linear; }
 
 /*# sourceMappingURL=application.css.map */
