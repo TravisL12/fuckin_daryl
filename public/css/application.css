@@ -1,12 +1,17 @@
+@keyframes daryl {
+  0%, 30%, 50%,58%, 100% {
+    top: 167px; }
+  20%, 40%, 70%, 80% {
+    top: 200px; } }
+.container .dave .mouth.daryl {
+  animation: daryl 1.3s linear; }
+
 .container .dave {
   display: inline-block;
   position: relative; }
   .container .dave .mouth {
-    position: absolute;
     top: 167px;
-    left: 177px;
-    transition: 0.1s all ease-out; }
-  .container .dave:hover .mouth {
-    top: 200px; }
+    position: absolute;
+    left: 177px; }
 
 /*# sourceMappingURL=application.css.map */
