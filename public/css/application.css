@@ -1,0 +1,12 @@
+.container .dave {
+  display: inline-block;
+  position: relative; }
+  .container .dave .mouth {
+    position: absolute;
+    top: 167px;
+    left: 177px;
+    transition: 0.1s all ease-out; }
+  .container .dave:hover .mouth {
+    top: 200px; }
+
+/*# sourceMappingURL=application.css.map */
