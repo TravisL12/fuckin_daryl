@@ -1,0 +1,18 @@
+.container {
+    .dave {
+        display: inline-block;
+        position: relative;
+        .face {}
+        .mouth {
+            position: absolute;
+            top: 167px;
+            left: 177px;
+            transition: 0.1s all ease-out;
+        }
+        &:hover {
+            .mouth {
+                top: 200px;
+            }
+        }
+    }
+}
