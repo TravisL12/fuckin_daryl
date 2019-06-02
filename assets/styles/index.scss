@@ -1,9 +1,29 @@
-// Apply a natural box layout model to all elements
-// but allowing components to change
-// http://www.paulirish.com/2012/box-sizing-border-box-ftw/
-html {
-    box-sizing: border-box;
+@keyframes daryl {
+    0%, 30%, 50%,58%, 100% {
+        top: 167px;
+    }
+    20%, 40%, 70%, 80% {
+        top: 200px;
+    }
 }
-*, *:before, *:after {
-    box-sizing: inherit;
+
+%daryl {
+    animation: daryl 1.3s linear;
+}
+
+.container {
+    .dave {
+        display: inline-block;
+        position: relative;
+        .face {}
+        .mouth {
+            top: 167px;
+            position: absolute;
+            left: 177px;
+            transition: 0.05s top linear;
+            &.daryl {
+                @extend %daryl;
+            }
+        }
+    }
 }
