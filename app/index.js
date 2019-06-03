@@ -1,28 +1,26 @@
-/**
- * Application entry point
- */
-
-// Load application styles
 import "styles/index.scss";
-
-// ================================
-// START YOUR APP HERE
-// ================================
 
 const dave = document.getElementById("dave-fucking-grohl");
 const mouth = dave.querySelector(".mouth");
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 1024;
-analyser.smoothingTimeConstant = 1;
-const bufferLength = analyser.fftSize;
-const dataArray = new Float32Array(bufferLength);
-analyser.getFloatTimeDomainData(dataArray);
 
-let source;
+let analyser;
+let dataArray;
+let bufferLength;
+function createAnalyser(audioCtx) {
+  const a = audioCtx.createAnalyser();
+  a.fftSize = 1024;
+  a.smoothingTimeConstant = 1;
+  bufferLength = a.fftSize;
+  dataArray = new Float32Array(bufferLength);
+  a.getFloatTimeDomainData(dataArray);
+
+  return a;
+}
 
 // Promise for loading sound
-function loadSound(url) {
+function loadSound(url, audioCtx) {
+  analyser = createAnalyser(audioCtx);
+
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open("GET", url, true);
@@ -30,15 +28,16 @@ function loadSound(url) {
 
     request.onload = function() {
       audioCtx.decodeAudioData(request.response).then(buffer => {
-        resolve(buffer);
+        resolve({ audioCtx, buffer });
       });
     };
     request.send();
   });
 }
 
-function playSound(buffer) {
-  source = audioCtx.createBufferSource();
+function playSound({ audioCtx, buffer }) {
+  analyser = createAnalyser(audioCtx);
+  const source = audioCtx.createBufferSource();
   source.connect(analyser);
   source.connect(audioCtx.destination);
   source.buffer = buffer;
@@ -47,17 +46,19 @@ function playSound(buffer) {
 }
 
 function playDaryl(e) {
-  // mouth.classList.add('daryl');
-  loadSound("assets/audio/fuckin_daryl.mp3").then(buffer => {
-    playSound(buffer);
-  });
+  const audioCtx = new AudioContext();
+  loadSound("assets/audio/fuckin_daryl.mp3", audioCtx).then(
+    ({ audioCtx, buffer }) => {
+      playSound({ audioCtx, buffer });
+    }
+  );
 }
 
 dave.addEventListener("mouseover", playDaryl);
 dave.addEventListener("touchstart", playDaryl);
 
 dave.addEventListener("mouseleave", e => {
-  source.stop();
+  // source.stop();
   // mouth.classList.remove('daryl');
 });
 
@@ -65,9 +66,9 @@ let drawVisual;
 function draw() {
   drawVisual = requestAnimationFrame(draw);
   analyser.getFloatTimeDomainData(dataArray);
-  // console.log(dataArray);
   for (let i = 0; i < bufferLength; i++) {
-    let v = Math.floor(Math.abs(dataArray[i]) * 100);
+    const v = Math.floor(Math.abs(dataArray[i]) * 100);
+    console.log(v);
     mouth.style.top = 167 + v + 10;
   }
 }
